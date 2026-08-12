@@ -21,13 +21,19 @@ Pick a node that reports `IDLE`.
 Use `Block: start one run across several nodes`, even for one node. It supports
 `dry_run` and composes the `torchrun` launcher for the node.
 
+Actual repository settings for this run:
+
+- repository: `arteexu/rho-sparse-attention`
+- branch: `edullm/rho-block-12h`
+- command: `bash .edullm/block_rho_12h_suite.sh`
+
 Dry run:
 
 ```bash
 gh workflow run block-run-distributed.yml --ref main -R edu-llm/platform \
   -f run_name=rho-tinyllama-12h-01 \
-  -f branch=<your-public-branch> \
-  -f repository=<owner>/<repo> \
+  -f branch=edullm/rho-block-12h \
+  -f repository=arteexu/rho-sparse-attention \
   -f command='bash .edullm/block_rho_12h_suite.sh' \
   -f node_count=1 \
   -f nodes= \
@@ -44,8 +50,8 @@ If the plan looks right, run the same dispatch with `dry_run=false`.
 ```bash
 gh workflow run block-run-distributed.yml --ref main -R edu-llm/platform \
   -f run_name=rho-tinyllama-12h-01 \
-  -f branch=<your-public-branch> \
-  -f repository=<owner>/<repo> \
+  -f branch=edullm/rho-block-12h \
+  -f repository=arteexu/rho-sparse-attention \
   -f command='bash .edullm/block_rho_12h_suite.sh' \
   -f node_count=1 \
   -f nodes= \
@@ -65,6 +71,25 @@ This bounded suite runs:
 
 Each strategy defaults to at most 3.5 hours, so the whole suite stays under a
 12-hour wall clock including setup/download time.
+
+If the active block has less than 12 hours left, do not use the full command above.
+Use a reduced command instead, for example:
+
+```bash
+gh workflow run block-run-distributed.yml --ref main -R edu-llm/platform \
+  -f run_name=rho-tinyllama-short-01 \
+  -f branch=edullm/rho-block-12h \
+  -f repository=arteexu/rho-sparse-attention \
+  -f command='env STRATEGIES=clm,slm MAX_STEPS=450 MAX_RUNTIME_HOURS_PER_STRATEGY=2.75 bash .edullm/block_rho_12h_suite.sh' \
+  -f node_count=1 \
+  -f nodes= \
+  -f expert_parallel= \
+  -f mesh_flags=false \
+  -f wandb_project=capacity-block \
+  -f fabric=auto \
+  -f dry_run=true \
+  -f region=us-east-2
+```
 
 ## 3. What The Command Runs
 
