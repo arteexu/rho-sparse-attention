@@ -7,7 +7,7 @@ Planned run:
 - run name: `rho-tinyllama-12h-01`
 - repository: `arteexu/rho-sparse-attention`
 - branch: `edullm/rho-block-12h`
-- commit: `216b9fbb4b156ac01db23f95396826e24e0a4c91`
+- commit: use the branch tip resolved by the block workflow; the dispatch summary prints it
 - workflow: `Block: start one run across several nodes`
 - node count: `1`
 - command: `bash .edullm/block_rho_12h_suite.sh`
