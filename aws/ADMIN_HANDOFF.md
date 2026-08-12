@@ -4,13 +4,13 @@ I want to run one bounded RHO/SLM experiment on the edu-llm capacity block.
 
 Planned run:
 
-- run name: `rho-tinyllama-12h-01`
+- run names: `rho-tinyllama-clm-02`, `rho-tinyllama-random-02`, `rho-tinyllama-slm-02`
 - repository: `arteexu/rho-sparse-attention`
 - branch: `edullm/rho-block-12h`
 - commit: use the branch tip resolved by the block workflow; the dispatch summary prints it
 - workflow: `Block: start one run across several nodes`
 - node count: `1`
-- command: `bash .edullm/block_rho_12h_suite.sh`
+- command pattern: `env STRATEGY=<clm|random|slm> bash .edullm/block_rho_12h_suite.sh`
 - mesh flags: `false`
 - fabric: `auto`
 - region: `us-east-2`
@@ -19,22 +19,23 @@ Planned run:
 
 What it runs:
 
-- CLM baseline
-- random masking baseline
-- RHO-style SLM with curriculum `0:0.6,300:0.8,650:1.0`
+- CLM baseline, as its own Block run
+- random masking baseline, as its own Block run
+- RHO-style SLM with curriculum `0:0.6,300:0.8,650:1.0`, as its own Block run
 - model: `TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T`
 - reference model: `TinyLlama/TinyLlama_v1.1_math_code`
 - corpus: `open-web-math/open-web-math`
 
 Timing note:
 
-- This suite is configured for a 12-hour budget on a fresh block: three strategies, each
-  capped at 3.5 hours, plus setup/download slack.
+- The stable launch shape is one strategy per distributed Block run. Three strategies, each
+  capped at 3.5 hours, can run in parallel if three nodes are idle or sequentially inside a
+  fresh block window.
 - The active August 2026 block guide says the current block is usable only until
   2026-08-12 11:00 UTC. At 2026-08-12 04:55 UTC, that leaves about 6 hours, so a full
   12-hour proof run needs the next block or a reduced command.
-- If we must use the remainder of the current block, use a smaller command such as:
-  `env STRATEGIES=clm,slm MAX_STEPS=450 MAX_RUNTIME_HOURS_PER_STRATEGY=2.75 bash .edullm/block_rho_12h_suite.sh`
+- If we must use the remainder of the current block, use smaller per-strategy commands such as:
+  `env STRATEGY=slm MAX_STEPS=450 MAX_RUNTIME_HOURS_PER_STRATEGY=2.75 bash .edullm/block_rho_12h_suite.sh`
 
 Approval needed:
 

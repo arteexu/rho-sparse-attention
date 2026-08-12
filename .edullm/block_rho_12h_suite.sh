@@ -50,19 +50,40 @@ WARMUP_STEPS="${WARMUP_STEPS:-75}"
 SLM_WARMUP_STEPS="${SLM_WARMUP_STEPS:-20}"
 SELECT_RATIO_SCHEDULE="${SELECT_RATIO_SCHEDULE:-0:0.6,300:0.8,650:1.0}"
 ATTN_IMPLEMENTATION="${ATTN_IMPLEMENTATION:-sdpa}"
-STRATEGIES="${STRATEGIES:-clm,random,slm}"
+EXPLICIT_STRATEGIES="${STRATEGIES:-}"
+if [[ -n "${STRATEGY:-}" && -z "${EXPLICIT_STRATEGIES}" ]]; then
+  STRATEGIES="${STRATEGY}"
+else
+  STRATEGIES="${EXPLICIT_STRATEGIES:-slm}"
+fi
 MAX_RUNTIME_HOURS_PER_STRATEGY="${MAX_RUNTIME_HOURS_PER_STRATEGY:-3.5}"
 
 RUN_ROOT="${RUN_ROOT:-/work/runs/${RUN_ID}}"
 ARTIFACT_ROOT="${ARTIFACT_ROOT:-/work/log/artifacts}"
 mkdir -p "${RUN_ROOT}" "${ARTIFACT_ROOT}"
 
-IFS=',' read -r -a STRATEGY_LIST <<< "${STRATEGIES}"
-
-for raw_strategy in "${STRATEGY_LIST[@]}"; do
+IFS=',' read -r -a RAW_STRATEGY_LIST <<< "${STRATEGIES}"
+STRATEGY_LIST=()
+for raw_strategy in "${RAW_STRATEGY_LIST[@]}"; do
   strategy="$(echo "${raw_strategy}" | tr -d '[:space:]')"
-  [[ -n "${strategy}" ]] || continue
+  [[ -n "${strategy}" ]] && STRATEGY_LIST+=("${strategy}")
+done
 
+if [[ "${#STRATEGY_LIST[@]}" == "0" ]]; then
+  echo "No strategy requested. Set STRATEGY=slm or STRATEGIES=slm." >&2
+  exit 64
+fi
+
+if [[ "${#STRATEGY_LIST[@]}" != "1" && "${ALLOW_MULTI_STRATEGY_UNDER_TORCHRUN:-false}" != "true" ]]; then
+  if [[ -n "${RANK:-}" || -n "${LOCAL_RANK:-}" || -n "${WORLD_SIZE:-}" ]]; then
+    echo "Multiple strategies inside one distributed torchrun can fail during DDP/NCCL reinitialization." >&2
+    echo "Launch one Block run per strategy, for example STRATEGY=clm, STRATEGY=random, and STRATEGY=slm." >&2
+    echo "Set ALLOW_MULTI_STRATEGY_UNDER_TORCHRUN=true only if you intentionally want the old suite behavior." >&2
+    exit 64
+  fi
+fi
+
+for strategy in "${STRATEGY_LIST[@]}"; do
   output_dir="${RUN_ROOT}/${strategy}"
   mirror_dir="${ARTIFACT_ROOT}/${strategy}"
   mkdir -p "${output_dir}" "${mirror_dir}"

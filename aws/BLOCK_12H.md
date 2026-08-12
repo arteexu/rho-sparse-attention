@@ -25,7 +25,7 @@ Actual repository settings for this run:
 
 - repository: `arteexu/rho-sparse-attention`
 - branch: `edullm/rho-block-12h`
-- command: `bash .edullm/block_rho_12h_suite.sh`
+- command: `env STRATEGY=slm bash .edullm/block_rho_12h_suite.sh`
 
 Dry run:
 
@@ -34,7 +34,7 @@ gh workflow run block-run-distributed.yml --ref main -R edu-llm/platform \
   -f run_name=rho-tinyllama-12h-01 \
   -f branch=edullm/rho-block-12h \
   -f repository=arteexu/rho-sparse-attention \
-  -f command='bash .edullm/block_rho_12h_suite.sh' \
+  -f command='env STRATEGY=slm bash .edullm/block_rho_12h_suite.sh' \
   -f node_count=1 \
   -f nodes= \
   -f expert_parallel= \
@@ -52,7 +52,7 @@ gh workflow run block-run-distributed.yml --ref main -R edu-llm/platform \
   -f run_name=rho-tinyllama-12h-01 \
   -f branch=edullm/rho-block-12h \
   -f repository=arteexu/rho-sparse-attention \
-  -f command='bash .edullm/block_rho_12h_suite.sh' \
+  -f command='env STRATEGY=slm bash .edullm/block_rho_12h_suite.sh' \
   -f node_count=1 \
   -f nodes= \
   -f expert_parallel= \
@@ -63,24 +63,27 @@ gh workflow run block-run-distributed.yml --ref main -R edu-llm/platform \
   -f region=us-east-2
 ```
 
-This bounded suite runs:
+For the proof run, dispatch one Block run per strategy rather than chaining
+strategies inside one distributed shell. The stable comparison set is:
 
 - `clm`
 - `random`
 - `slm`
 
-Each strategy defaults to at most 3.5 hours, so the whole suite stays under a
-12-hour wall clock including setup/download time.
+Each strategy defaults to at most 3.5 hours. Run names should include the
+strategy, for example `rho-tinyllama-clm-01`, `rho-tinyllama-random-01`, and
+`rho-tinyllama-slm-01`. This avoids DDP/NCCL reinitialization issues between
+strategies and lets the jobs run in parallel when enough nodes are idle.
 
 If the active block has less than 12 hours left, do not use the full command above.
 Use a reduced command instead, for example:
 
 ```bash
 gh workflow run block-run-distributed.yml --ref main -R edu-llm/platform \
-  -f run_name=rho-tinyllama-short-01 \
+  -f run_name=rho-tinyllama-slm-short-01 \
   -f branch=edullm/rho-block-12h \
   -f repository=arteexu/rho-sparse-attention \
-  -f command='env STRATEGIES=clm,slm MAX_STEPS=450 MAX_RUNTIME_HOURS_PER_STRATEGY=2.75 bash .edullm/block_rho_12h_suite.sh' \
+  -f command='env STRATEGY=slm MAX_STEPS=450 MAX_RUNTIME_HOURS_PER_STRATEGY=2.75 bash .edullm/block_rho_12h_suite.sh' \
   -f node_count=1 \
   -f nodes= \
   -f expert_parallel= \
@@ -102,12 +105,13 @@ Defaults in `.edullm/block_rho_12h_suite.sh`:
 - global tokens per optimizer step on one 8-GPU node: about 131k
 - max steps per strategy: 900
 - SLM curriculum: `0:0.6,300:0.8,650:1.0`
+- strategy: `slm`
 
 Override any setting by prefixing environment variables inside the `command`
 field, for example:
 
 ```text
-env MAX_STEPS=1200 MAX_RUNTIME_HOURS_PER_STRATEGY=3.75 bash .edullm/block_rho_12h_suite.sh
+env STRATEGY=slm MAX_STEPS=1200 MAX_RUNTIME_HOURS_PER_STRATEGY=3.75 bash .edullm/block_rho_12h_suite.sh
 ```
 
 ## 4. Watch Logs
@@ -125,9 +129,7 @@ gh workflow run block-logs.yml --ref main -R edu-llm/platform \
 Small artifacts are mirrored under the synced log prefix:
 
 ```text
-log/artifacts/clm/train_log.csv
-log/artifacts/random/train_log.csv
-log/artifacts/slm/train_log.csv
+log/artifacts/<strategy>/train_log.csv
 ```
 
 Full local checkpoints are under:
