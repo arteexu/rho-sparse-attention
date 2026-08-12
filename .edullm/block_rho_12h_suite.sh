@@ -34,6 +34,7 @@ fi
 MODEL_NAME="${MODEL_NAME:-TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T}"
 REFERENCE_MODEL_NAME="${REFERENCE_MODEL_NAME:-TinyLlama/TinyLlama_v1.1_math_code}"
 DATASET_NAME="${DATASET_NAME:-open-web-math/open-web-math}"
+DATASET_CONFIG="${DATASET_CONFIG:-}"
 DATASET_SPLIT="${DATASET_SPLIT:-train}"
 TEXT_FIELD="${TEXT_FIELD:-text}"
 SEQ_LEN="${SEQ_LEN:-2048}"
@@ -85,6 +86,7 @@ for raw_strategy in "${STRATEGY_LIST[@]}"; do
     --model-name "${MODEL_NAME}" \
     --reference-model-name "${REFERENCE_MODEL_NAME}" \
     --dataset-name "${DATASET_NAME}" \
+    --dataset-config "${DATASET_CONFIG}" \
     --dataset-split "${DATASET_SPLIT}" \
     --text-field "${TEXT_FIELD}" \
     --output-dir "${output_dir}" \
