@@ -1,0 +1,30 @@
+.venv/
+runs/
+tmp/
+__pycache__/
+*.egg-info/
+.DS_Store
+
+# Python/build caches
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+build/
+dist/
+
+# Local model/data caches
+.hf_cache/
+.cache/
+wandb/
+
+# Heavy training artifacts
+checkpoint-*/
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.safetensors
+
+# Local paper/render artifacts that are not needed on the block
+NotAllTokens.pdf

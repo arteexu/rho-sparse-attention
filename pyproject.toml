@@ -1,0 +1,22 @@
+[project]
+name = "rho-moe-experiment"
+version = "0.1.0"
+description = "Small RHO-1 style selective language modeling experiment with dense and MoE transformers."
+requires-python = ">=3.11,<3.13"
+dependencies = [
+  "datasets>=2.19",
+  "numpy>=1.26",
+  "safetensors>=0.4",
+  "torch>=2.3",
+  "transformers>=4.44",
+]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = []
+
+[tool.uv]
+package = false

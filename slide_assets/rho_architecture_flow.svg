@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid meet" role="img" aria-labelledby="title desc">
+  <title id="title">RHO-style selective language modeling architecture</title>
+  <desc id="desc">Flow chart showing reference model scoring, current model scoring, excess-loss token selection, masked loss, and MoE transformer update.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#374151"/>
+    </marker>
+  </defs>
+  <rect width="1600" height="900" fill="#ffffff"/>
+  <text x="70" y="70" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700" fill="#111827">RHO-style Selective Language Modeling with MoE</text>
+  <text x="70" y="108" font-family="Inter, Arial, sans-serif" font-size="18" fill="#4b5563">Full context is visible to the model; only selected target-token losses produce gradients.</text>
+
+  <g font-family="Inter, Arial, sans-serif">
+    <rect x="70" y="170" width="220" height="105" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="180" y="210" font-size="20" font-weight="700" text-anchor="middle" fill="#111827">Pretraining batch</text>
+    <text x="180" y="240" font-size="15" text-anchor="middle" fill="#374151">packed text sequences</text>
+
+    <rect x="390" y="125" width="250" height="105" rx="12" fill="#f9fafb" stroke="#9ca3af" stroke-width="2"/>
+    <text x="515" y="165" font-size="20" font-weight="700" text-anchor="middle" fill="#111827">Reference model</text>
+    <text x="515" y="195" font-size="15" text-anchor="middle" fill="#374151">desired-domain logprobs</text>
+
+    <rect x="390" y="280" width="250" height="105" rx="12" fill="#f9fafb" stroke="#9ca3af" stroke-width="2"/>
+    <text x="515" y="320" font-size="20" font-weight="700" text-anchor="middle" fill="#111827">Current model</text>
+    <text x="515" y="350" font-size="15" text-anchor="middle" fill="#374151">training-token losses</text>
+
+    <rect x="740" y="202" width="250" height="105" rx="12" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+    <text x="865" y="242" font-size="20" font-weight="700" text-anchor="middle" fill="#111827">Excess loss score</text>
+    <text x="865" y="272" font-size="15" text-anchor="middle" fill="#374151">L_current - L_reference</text>
+
+    <rect x="1085" y="202" width="240" height="105" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="1205" y="242" font-size="20" font-weight="700" text-anchor="middle" fill="#111827">Top-k token mask</text>
+    <text x="1205" y="272" font-size="15" text-anchor="middle" fill="#374151">0.6 → 0.8 → 1.0 curriculum</text>
+  
+    <rect x="740" y="430" width="250" height="115" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+    <text x="865" y="472" font-size="20" font-weight="700" text-anchor="middle" fill="#111827">Masked LM loss</text>
+    <text x="865" y="502" font-size="15" text-anchor="middle" fill="#374151">unselected tokens keep context</text>
+    <text x="865" y="524" font-size="15" text-anchor="middle" fill="#374151">but receive no loss</text>
+
+    <rect x="1085" y="430" width="240" height="115" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+    <text x="1205" y="472" font-size="20" font-weight="700" text-anchor="middle" fill="#111827">MoE transformer</text>
+    <text x="1205" y="502" font-size="15" text-anchor="middle" fill="#374151">top-2 expert routing</text>
+    <text x="1205" y="524" font-size="15" text-anchor="middle" fill="#374151">load-balance loss</text>
+
+    <path d="M290 210 C330 180, 350 175, 390 175" fill="none" stroke="#374151" stroke-width="2.5" marker-end="url(#arrow)"/>
+    <path d="M290 240 C330 300, 350 332, 390 332" fill="none" stroke="#374151" stroke-width="2.5" marker-end="url(#arrow)"/>
+    <path d="M640 177 C690 177, 705 225, 740 238" fill="none" stroke="#374151" stroke-width="2.5" marker-end="url(#arrow)"/>
+    <path d="M640 332 C690 332, 705 285, 740 270" fill="none" stroke="#374151" stroke-width="2.5" marker-end="url(#arrow)"/>
+    <path d="M990 255 L1085 255" fill="none" stroke="#374151" stroke-width="2.5" marker-end="url(#arrow)"/>
+    <path d="M1205 307 C1205 355, 1010 405, 950 430" fill="none" stroke="#374151" stroke-width="2.5" marker-end="url(#arrow)"/>
+    <path d="M990 488 L1085 488" fill="none" stroke="#374151" stroke-width="2.5" marker-end="url(#arrow)"/>
+    <path d="M1205 545 C1110 650, 625 650, 515 385" fill="none" stroke="#374151" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+    <text x="870" y="650" font-size="15" fill="#4b5563" text-anchor="middle">Backprop updates the current model; reference model remains frozen.</text>
+  </g>
+</svg>

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid meet" role="img" aria-labelledby="title desc">
+  <title id="title">RHO-style MoE curriculum local experiment results</title>
+  <desc id="desc">Comparison of MoE CLM, random masking, and RHO-style SLM curriculum on desired loss, desired accuracy, and selected loss tokens.</desc>
+  <rect width="1600" height="900" fill="#ffffff"/>
+  <text x="70" y="70" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700" fill="#111827">RHO-style SLM improved target-domain efficiency in the larger local MoE run</text>
+  <text x="70" y="108" font-family="Inter, Arial, sans-serif" font-size="18" fill="#4b5563">2,500 steps, 2.54M total tokens seen, ~17.3M parameter MoE, GSM8K + WikiText mixture</text>
+
+  <g transform="translate(70,155)">
+    <text x="0" y="0" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" fill="#111827">Desired loss ↓</text>
+    <line x1="0" y1="430" x2="360" y2="430" stroke="#d1d5db" stroke-width="2"/>
+    <line x1="0" y1="70" x2="0" y2="430" stroke="#d1d5db" stroke-width="2"/>
+    <text x="0" y="462" font-family="Inter, Arial, sans-serif" font-size="16" text-anchor="middle" fill="#374151">CLM</text>
+    <text x="150" y="462" font-family="Inter, Arial, sans-serif" font-size="16" text-anchor="middle" fill="#374151">Random</text>
+    <text x="300" y="462" font-family="Inter, Arial, sans-serif" font-size="16" text-anchor="middle" fill="#374151">RHO-SLM</text>
+
+    <rect x="32" y="137" width="86" height="293" rx="4" fill="#6b7280"/>
+    <rect x="182" y="64" width="86" height="366" rx="4" fill="#9ca3af"/>
+    <rect x="332" y="146" width="86" height="284" rx="4" fill="#2563eb"/>
+
+    <text x="75" y="122" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle" fill="#111827">3.418</text>
+    <text x="225" y="49" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle" fill="#111827">3.542</text>
+    <text x="375" y="131" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle" fill="#111827">3.403</text>
+    <text x="375" y="24" font-family="Inter, Arial, sans-serif" font-size="15" text-anchor="middle" fill="#2563eb">best</text>
+  </g>
+
+  <g transform="translate(540,155)">
+    <text x="0" y="0" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" fill="#111827">Desired accuracy ↑</text>
+    <line x1="0" y1="430" x2="360" y2="430" stroke="#d1d5db" stroke-width="2"/>
+    <line x1="0" y1="70" x2="0" y2="430" stroke="#d1d5db" stroke-width="2"/>
+    <text x="0" y="462" font-family="Inter, Arial, sans-serif" font-size="16" text-anchor="middle" fill="#374151">CLM</text>
+    <text x="150" y="462" font-family="Inter, Arial, sans-serif" font-size="16" text-anchor="middle" fill="#374151">Random</text>
+    <text x="300" y="462" font-family="Inter, Arial, sans-serif" font-size="16" text-anchor="middle" fill="#374151">RHO-SLM</text>
+
+    <rect x="32" y="123" width="86" height="307" rx="4" fill="#6b7280"/>
+    <rect x="182" y="146" width="86" height="284" rx="4" fill="#9ca3af"/>
+    <rect x="332" y="120" width="86" height="310" rx="4" fill="#2563eb"/>
+
+    <text x="75" y="108" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle" fill="#111827">39.46%</text>
+    <text x="225" y="131" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle" fill="#111827">36.52%</text>
+    <text x="375" y="105" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle" fill="#111827">39.77%</text>
+    <text x="375" y="24" font-family="Inter, Arial, sans-serif" font-size="15" text-anchor="middle" fill="#2563eb">best</text>
+  </g>
+
+  <g transform="translate(1010,155)">
+    <text x="0" y="0" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" fill="#111827">Selected loss tokens ↓</text>
+    <line x1="0" y1="430" x2="320" y2="430" stroke="#d1d5db" stroke-width="2"/>
+    <line x1="0" y1="70" x2="0" y2="430" stroke="#d1d5db" stroke-width="2"/>
+    <text x="0" y="462" font-family="Inter, Arial, sans-serif" font-size="16" text-anchor="middle" fill="#374151">CLM</text>
+    <text x="135" y="462" font-family="Inter, Arial, sans-serif" font-size="16" text-anchor="middle" fill="#374151">Random</text>
+    <text x="270" y="462" font-family="Inter, Arial, sans-serif" font-size="16" text-anchor="middle" fill="#374151">RHO-SLM</text>
+
+    <rect x="24" y="70" width="78" height="360" rx="4" fill="#6b7280"/>
+    <rect x="159" y="138" width="78" height="292" rx="4" fill="#9ca3af"/>
+    <rect x="294" y="138" width="78" height="292" rx="4" fill="#2563eb"/>
+
+    <text x="63" y="55" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle" fill="#111827">2.54M</text>
+    <text x="198" y="123" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle" fill="#111827">2.06M</text>
+    <text x="333" y="123" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle" fill="#111827">2.06M</text>
+    <text x="333" y="98" font-family="Inter, Arial, sans-serif" font-size="15" text-anchor="middle" fill="#2563eb">19% fewer</text>
+  </g>
+
+  <g transform="translate(70,760)">
+    <rect x="0" y="-24" width="18" height="18" rx="3" fill="#6b7280"/>
+    <text x="28" y="-10" font-family="Inter, Arial, sans-serif" font-size="15" fill="#374151">CLM baseline</text>
+    <rect x="155" y="-24" width="18" height="18" rx="3" fill="#9ca3af"/>
+    <text x="183" y="-10" font-family="Inter, Arial, sans-serif" font-size="15" fill="#374151">Random masking at same token budget</text>
+    <rect x="455" y="-24" width="18" height="18" rx="3" fill="#2563eb"/>
+    <text x="483" y="-10" font-family="Inter, Arial, sans-serif" font-size="15" fill="#374151">RHO-style SLM curriculum</text>
+  </g>
+</svg>

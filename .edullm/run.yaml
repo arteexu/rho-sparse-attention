@@ -1,0 +1,6 @@
+command: >-
+  python -m torch.distributed.run
+  --standalone
+  --nproc-per-node=gpu
+  --no-python
+  bash .edullm/block_rho_12h_suite.sh
