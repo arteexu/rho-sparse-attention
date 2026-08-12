@@ -30,6 +30,10 @@ Approval needed:
 1. Confirm that a capacity-block fleet is currently up, or launch one if it is not.
 2. Confirm I can claim one idle `p5.48xlarge` node for this run.
 3. Confirm the branch/repo is acceptable for the block lane, which clones public GitHub repos.
+4. Optional for the normal citable platform path: register this repo in `edu-llm/platform`,
+   create its ECR repository/grants, deploy the publisher role update, and set
+   `AWS_ECR_PUBLISHER_ROLE_ARN` as an Actions repository variable. The block run does not
+   require this image path.
 
 I will dry-run the distributed workflow first, start only if the plan looks correct, monitor W&B
 and `block-logs.yml`, and release the node with `block-release.yml` after the run exits.

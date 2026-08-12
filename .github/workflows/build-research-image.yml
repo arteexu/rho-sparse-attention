@@ -1,0 +1,26 @@
+name: "Build eduLLM research image"
+
+on:
+  push:
+    branches:
+      - "edullm/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    permissions:
+      contents: read
+      id-token: write
+    uses: edu-llm/platform/.github/workflows/build-research-image.yml@main
+    with:
+      repository: ${{ github.event.repository.name }}
+      publisher_role_arn: ${{ vars.AWS_ECR_PUBLISHER_ROLE_ARN }}
+      test_command: >-
+        python -m py_compile
+        rho_hf_pretrain.py
+        rho_moe_experiment.py
+        rho_moe_real_train.py
+        rho_efficiency_sweep.py
